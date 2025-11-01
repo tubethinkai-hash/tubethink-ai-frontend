@@ -1,24 +1,28 @@
-<!-- 🧠 AI Chat Demo Section -->
-<section class="demo">
-  <h2>💬 Try TubeThink AI Demo</h2>
-  <p>Ask TubeThink AI for a YouTube idea!</p>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TubeThink AI Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
   <div class="chat-container">
     <div class="chat-header">
-      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" alt="AI" class="chat-avatar">
-      <h3>TubeThink AI Assistant</h3>
+      <h1>TubeThink AI</h1>
+      <p>Your YouTube Creative Partner 🤖</p>
     </div>
 
-    <div id="chat-log" class="chat-log">
-      <div class="bot-msg fade-in">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" class="msg-avatar" />
-        <div class="msg-text">👋 Hi! I’m TubeThink AI — ask me for a video idea!</div>
-      </div>
+    <div class="chat-box" id="chat-box">
+      <div class="bot-message">👋 Hi! I'm TubeThink AI. Ask me for a YouTube video idea!</div>
     </div>
 
     <div class="chat-input">
-      <input id="user-input" type="text" placeholder="Type your message..." />
+      <input type="text" id="user-input" placeholder="Type your message..." />
       <button id="send-btn">Send</button>
     </div>
   </div>
-</section>
+
+  <script src="script.js"></script>
+</body>
+</html>
