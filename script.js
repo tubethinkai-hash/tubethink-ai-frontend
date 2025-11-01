@@ -1,51 +1,44 @@
 const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
-const chatLog = document.getElementById("chat-log");
+const chatBox = document.getElementById("chat-box");
 
-sendBtn.addEventListener("click", handleMessage);
+sendBtn.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") handleMessage();
+  if (e.key === "Enter") sendMessage();
 });
 
-function handleMessage() {
+function sendMessage() {
   const text = userInput.value.trim();
   if (text === "") return;
-  addMessage("user", text);
+
+  // Add user message
+  addMessage(text, "user-message");
+
+  // Clear input
   userInput.value = "";
 
-  // Show typing indicator
-  const typing = document.createElement("div");
-  typing.classList.add("bot-msg");
-  typing.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" class="msg-avatar" />
-  <div class="msg-text typing">TubeThink AI is thinking...</div>`;
-  chatLog.appendChild(typing);
-  chatLog.scrollTop = chatLog.scrollHeight;
-
+  // Simulate AI typing
   setTimeout(() => {
-    typing.remove();
-    const reply = generateAIResponse(text);
-    addMessage("bot", reply);
-  }, 1200);
+    const reply = getAIResponse(text);
+    addMessage(reply, "bot-message");
+  }, 600);
 }
 
-function addMessage(sender, text) {
+function addMessage(text, className) {
   const msg = document.createElement("div");
-  msg.classList.add(sender === "bot" ? "bot-msg" : "user-msg");
-  const avatar =
-    sender === "bot"
-      ? `<img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" class="msg-avatar" />`
-      : `<img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" class="msg-avatar" />`;
-  msg.innerHTML = `${avatar}<div class="msg-text">${text}</div>`;
-  chatLog.appendChild(msg);
-  chatLog.scrollTop = chatLog.scrollHeight;
+  msg.classList.add(className);
+  msg.textContent = text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function generateAIResponse(input) {
-  const ideas = [
-    "🎬 Try this: *'5 Secrets YouTube Doesn't Tell Small Creators!'*",
-    "🔥 Idea: *'AI Tools That Make YouTube Editing 10x Faster!'*",
-    "📈 Go with: *'How I Got 1K Subs in 7 Days (No Clickbait)*'",
-    "🤖 *'I Let AI Decide My YouTube Content For a Week!'* — that’d be awesome!"
+function getAIResponse(input) {
+  const responses = [
+    "That sounds interesting! How about a video on 'AI tools for YouTubers'?",
+    "You could make a tutorial about improving YouTube titles with AI.",
+    "Try a video like 'How I use TubeThink AI to plan my videos'!",
+    "Great idea! Want me to generate a catchy title for that?"
   ];
-  return ideas[Math.floor(Math.random() * ideas.length)];
+
+  return responses[Math.floor(Math.random() * responses.length)];
 }
