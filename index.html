@@ -1,71 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TubeThink AI - Smart YouTube Idea Assistant</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
+<!-- 🧠 AI Chat Demo Section -->
+<section class="demo">
+  <h2>💬 Try TubeThink AI Demo</h2>
+  <p>Ask TubeThink AI for a YouTube idea!</p>
 
-<body>
-  <header class="header">
-    <div class="logo">TubeThink <span>AI</span></div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Features</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="fade-in">Turn Ideas Into Viral YouTube Content 🚀</h1>
-      <p class="fade-in-delay">TubeThink AI helps you generate viral video ideas, catchy titles, and creative strategies — all powered by artificial intelligence.</p>
-      <button class="cta-btn">Try TubeThink AI</button>
+  <div class="chat-container">
+    <div class="chat-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" alt="AI" class="chat-avatar">
+      <h3>TubeThink AI Assistant</h3>
     </div>
-  </section>
 
-  <section class="features">
-    <h2>Why Creators Love TubeThink AI</h2>
-    <div class="feature-grid">
-      <div class="feature">
-        <h3>🎯 AI Video Ideas</h3>
-        <p>Get smart, trending video ideas customized to your niche.</p>
-      </div>
-      <div class="feature">
-        <h3>🧠 Title & Script Generator</h3>
-        <p>Create catchy titles and scripts that engage audiences instantly.</p>
-      </div>
-      <div class="feature">
-        <h3>📈 Audience Insights</h3>
-        <p>Understand what your audience loves — and deliver exactly that.</p>
+    <div id="chat-log" class="chat-log">
+      <div class="bot-msg fade-in">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712107.png" class="msg-avatar" />
+        <div class="msg-text">👋 Hi! I’m TubeThink AI — ask me for a video idea!</div>
       </div>
     </div>
-  </section>
 
-  <!-- 🧠 AI Chat Demo Section -->
-  <section class="demo">
-    <h2>💬 Try TubeThink AI Demo</h2>
-    <p>Ask TubeThink AI for a YouTube video idea!</p>
-
-    <div class="chat-box">
-      <div id="chat-log">
-        <div class="bot-msg">👋 Hi! I’m TubeThink AI. Ask me for a YouTube idea!</div>
-      </div>
-
-      <div class="chat-input">
-        <input id="user-input" type="text" placeholder="Ask something..." />
-        <button id="send-btn">Send</button>
-      </div>
+    <div class="chat-input">
+      <input id="user-input" type="text" placeholder="Type your message..." />
+      <button id="send-btn">Send</button>
     </div>
-  </section>
-
-  <footer>
-    <p>© 2025 TubeThink AI | Built with ❤️ for creators</p>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  </div>
+</section>
