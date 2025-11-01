@@ -1,70 +1,49 @@
-const chatBox = document.getElementById("chat-box");
-const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
+const form = document.getElementById("chat-form");
+const chatContainer = document.getElementById("chat-container");
+const input = document.getElementById("user-input");
 
-sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const message = input.value.trim();
+  if (!message) return;
+
+  addMessage("user", message);
+  input.value = "";
+
+  const thinking = addMessage("ai", "Thinking...");
+  await new Promise((r) => setTimeout(r, 1000));
+
+  thinking.querySelector(".text").textContent =
+    generateAIResponse(message);
 });
 
-function sendMessage() {
-  const text = userInput.value.trim();
-  if (text === "") return;
-
-  addMessage(text, "user");
-  userInput.value = "";
-
-  // Simulate AI typing...
-  setTimeout(() => {
-    addTypingEffect("Thinking of something creative...");
-    setTimeout(() => {
-      removeTypingEffect();
-      addMessage(generateAIResponse(text), "ai");
-    }, 1500);
-  }, 500);
-}
-
-function addMessage(text, sender) {
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("message", sender);
+function addMessage(role, text) {
+  const msg = document.createElement("div");
+  msg.classList.add("message", role);
 
   const avatar = document.createElement("div");
   avatar.classList.add("avatar");
-  avatar.textContent = sender === "ai" ? "🤖" : "🧑";
+  avatar.textContent = role === "user" ? "🧑" : "🤖";
 
-  const bubble = document.createElement("div");
-  bubble.classList.add("bubble");
-  bubble.textContent = text;
+  const msgText = document.createElement("div");
+  msgText.classList.add("text");
+  msgText.textContent = text;
 
-  messageDiv.appendChild(avatar);
-  messageDiv.appendChild(bubble);
-  chatBox.appendChild(messageDiv);
+  msg.appendChild(avatar);
+  msg.appendChild(msgText);
+  chatContainer.appendChild(msg);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 
-  chatBox.scrollTop = chatBox.scrollHeight;
+  return msg;
 }
 
-function addTypingEffect(text) {
-  const typingDiv = document.createElement("div");
-  typingDiv.classList.add("message", "ai", "typing");
-  typingDiv.innerHTML = `
-    <div class="avatar">🤖</div>
-    <div class="bubble">${text}</div>
-  `;
-  chatBox.appendChild(typingDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function removeTypingEffect() {
-  const typingDiv = document.querySelector(".typing");
-  if (typingDiv) typingDiv.remove();
-}
-
-function generateAIResponse(prompt) {
+function generateAIResponse(inputText) {
   const responses = [
-    `How about a YouTube video titled: "${prompt} Explained Simply"?`,
-    `Maybe try "${prompt} — The Secret Formula for Success"?`,
-    `"${prompt}" could make a viral short if you make it fun!`,
-    `Let's create "${prompt}" with TubeThink AI inspiration 🚀`,
+    "That’s a great topic! You could explore it by adding storytelling visuals.",
+    "Nice idea — how about adding trending keywords for better reach?",
+    "Try a ‘Top 5’ or ‘Behind the scenes’ format for this idea!",
+    "Sounds awesome! Don’t forget to make a catchy thumbnail.",
+    "Perfect! Use emotional hooks in your intro to grab attention."
   ];
   return responses[Math.floor(Math.random() * responses.length)];
 }
