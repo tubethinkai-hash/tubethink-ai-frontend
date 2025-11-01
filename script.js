@@ -1,6 +1,6 @@
-const sendBtn = document.getElementById("send-btn");
-const userInput = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
 
 sendBtn.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => {
@@ -11,34 +11,60 @@ function sendMessage() {
   const text = userInput.value.trim();
   if (text === "") return;
 
-  // Add user message
-  addMessage(text, "user-message");
-
-  // Clear input
+  addMessage(text, "user");
   userInput.value = "";
 
-  // Simulate AI typing
+  // Simulate AI typing...
   setTimeout(() => {
-    const reply = getAIResponse(text);
-    addMessage(reply, "bot-message");
-  }, 600);
+    addTypingEffect("Thinking of something creative...");
+    setTimeout(() => {
+      removeTypingEffect();
+      addMessage(generateAIResponse(text), "ai");
+    }, 1500);
+  }, 500);
 }
 
-function addMessage(text, className) {
-  const msg = document.createElement("div");
-  msg.classList.add(className);
-  msg.textContent = text;
-  chatBox.appendChild(msg);
+function addMessage(text, sender) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", sender);
+
+  const avatar = document.createElement("div");
+  avatar.classList.add("avatar");
+  avatar.textContent = sender === "ai" ? "🤖" : "🧑";
+
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  bubble.textContent = text;
+
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(bubble);
+  chatBox.appendChild(messageDiv);
+
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function getAIResponse(input) {
-  const responses = [
-    "That sounds interesting! How about a video on 'AI tools for YouTubers'?",
-    "You could make a tutorial about improving YouTube titles with AI.",
-    "Try a video like 'How I use TubeThink AI to plan my videos'!",
-    "Great idea! Want me to generate a catchy title for that?"
-  ];
+function addTypingEffect(text) {
+  const typingDiv = document.createElement("div");
+  typingDiv.classList.add("message", "ai", "typing");
+  typingDiv.innerHTML = `
+    <div class="avatar">🤖</div>
+    <div class="bubble">${text}</div>
+  `;
+  chatBox.appendChild(typingDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
+function removeTypingEffect() {
+  const typingDiv = document.querySelector(".typing");
+  if (typingDiv) typingDiv.remove();
+}
+
+function generateAIResponse(prompt) {
+  const responses = [
+    `How about a YouTube video titled: "${prompt} Explained Simply"?`,
+    `Maybe try "${prompt} — The Secret Formula for Success"?`,
+    `"${prompt}" could make a viral short if you make it fun!`,
+    `Let's create "${prompt}" with TubeThink AI inspiration 🚀`,
+  ];
   return responses[Math.floor(Math.random() * responses.length)];
 }
