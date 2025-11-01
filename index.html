@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TubeThink AI Assistant</title>
+  <title>TubeThink AI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="chat-container">
-    <div class="chat-header">
-      <h1>TubeThink AI</h1>
-      <p>Your YouTube Creative Partner 🤖</p>
+    <header class="chat-header">
+      <h1>TubeThink AI Assistant</h1>
+      <p>Ask for YouTube ideas, titles, and strategies 🎥</p>
+    </header>
+
+    <div id="chat-box" class="chat-box">
+      <div class="message ai">
+        <div class="avatar">🤖</div>
+        <div class="bubble">Hi there! I’m TubeThink AI. Ask me for a YouTube idea!</div>
+      </div>
     </div>
 
-    <div class="chat-box" id="chat-box">
-      <div class="bot-message">👋 Hi! I'm TubeThink AI. Ask me for a YouTube video idea!</div>
-    </div>
-
-    <div class="chat-input">
+    <div class="chat-input-area">
       <input type="text" id="user-input" placeholder="Type your message..." />
       <button id="send-btn">Send</button>
     </div>
