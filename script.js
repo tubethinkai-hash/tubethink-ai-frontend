@@ -2,21 +2,28 @@ const form = document.getElementById("chat-form");
 const chatContainer = document.getElementById("chat-container");
 const input = document.getElementById("user-input");
 
+// When user submits the message
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const message = input.value.trim();
   if (!message) return;
 
+  // Add user's message
   addMessage("user", message);
   input.value = "";
 
+  // Show temporary "thinking..." message
   const thinking = addMessage("ai", "Thinking...");
-  await new Promise((r) => setTimeout(r, 1000));
+  await new Promise((r) => setTimeout(r, 800));
 
-  thinking.querySelector(".text").textContent =
-    generateAIResponse(message);
+  // Get real response from backend
+  const aiReply = await generateAIResponse(message);
+
+  // Replace "Thinking..." with AI's real reply
+  thinking.querySelector(".text").textContent = aiReply;
 });
 
+// Function to display messages
 function addMessage(role, text) {
   const msg = document.createElement("div");
   msg.classList.add("message", role);
@@ -37,13 +44,23 @@ function addMessage(role, text) {
   return msg;
 }
 
-function generateAIResponse(inputText) {
-  const responses = [
-    "That’s a great topic! You could explore it by adding storytelling visuals.",
-    "Nice idea — how about adding trending keywords for better reach?",
-    "Try a ‘Top 5’ or ‘Behind the scenes’ format for this idea!",
-    "Sounds awesome! Don’t forget to make a catchy thumbnail.",
-    "Perfect! Use emotional hooks in your intro to grab attention."
-  ];
-  return responses[Math.floor(Math.random() * responses.length)];
+// Function to talk to backend API
+async function generateAIResponse(inputText) {
+  try {
+    const response = await fetch("https://tubethink-ai-server.onrender.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: inputText }),
+    });
+
+    if (!response.ok) throw new Error("Server error");
+
+    const data = await response.json();
+    return data.reply || "🤖 Sorry, I didn’t get that. Try again!";
+  } catch (error) {
+    console.error("Error:", error);
+    return "⚠️ Connection issue — please try again later.";
+  }
 }
