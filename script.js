@@ -1,50 +1,79 @@
-const form = document.getElementById("chat-form");
-const chatContainer = document.getElementById("chat-container");
-const input = document.getElementById("user-input");
+// ===============================
+// TubeThink AI - script.js
+// ===============================
 
-// Replace this with your Render backend URL:
-const API_URL = "https://tubethink-ai-server.onrender.com/chat";
+// 🔗 Backend API URL (replace if your backend URL is different)
+const API_URL = "https://tubethink-ai-backend.onrender.com";
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const message = input.value.trim();
-  if (!message) return;
+// 🎨 Select key elements
+const chatContainer = document.querySelector(".chat-container");
+const userInput = document.querySelector("#user-input");
+const sendButton = document.querySelector("#send-btn");
 
-  addMessage("user", message);
-  input.value = "";
+// 🧩 Add message to chat UI
+function addMessage(text, sender) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", sender);
 
-  const thinking = addMessage("ai", "Thinking...");
+  const avatar = document.createElement("span");
+  avatar.classList.add("avatar");
+  avatar.textContent = sender === "user" ? "🧑" : "🤖";
+
+  const messageBubble = document.createElement("div");
+  messageBubble.classList.add("bubble");
+  messageBubble.textContent = text;
+
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(messageBubble);
+  chatContainer.appendChild(messageDiv);
+
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// 🧠 Send user input to backend and get AI reply
+async function sendMessageToBackend(message) {
   try {
-    const res = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
 
-    const data = await res.json();
-    thinking.querySelector(".text").textContent = data.reply || "No response from AI.";
-  } catch (err) {
-    console.error(err);
-    thinking.querySelector(".text").textContent = "Error: unable to connect to AI server.";
+    if (!response.ok) {
+      throw new Error("Server error");
+    }
+
+    const data = await response.json();
+    return data.reply || "Hmm... I couldn’t find an answer.";
+  } catch (error) {
+    console.error(error);
+    return "⚠️ Unable to connect to AI. Please try again later.";
+  }
+}
+
+// 📨 Handle Send button click
+sendButton.addEventListener("click", async () => {
+  const message = userInput.value.trim();
+  if (message === "") return;
+
+  addMessage(message, "user");
+  userInput.value = "";
+
+  const reply = await sendMessageToBackend(message);
+  addMessage(reply, "bot");
+});
+
+// ⌨️ Handle Enter key press
+userInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    sendButton.click();
   }
 });
 
-function addMessage(role, text) {
-  const msg = document.createElement("div");
-  msg.classList.add("message", role);
-
-  const avatar = document.createElement("div");
-  avatar.classList.add("avatar");
-  avatar.textContent = role === "user" ? "🧑" : "🤖";
-
-  const msgText = document.createElement("div");
-  msgText.classList.add("text");
-  msgText.textContent = text;
-
-  msg.appendChild(avatar);
-  msg.appendChild(msgText);
-  chatContainer.appendChild(msg);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-
-  return msg;
-}
+// 👋 Initial greeting message
+window.addEventListener("load", () => {
+  addMessage(
+    "Hi! I’m TubeThink AI — your creative assistant for crafting viral YouTube ideas! 🚀",
+    "bot"
+  );
+});
