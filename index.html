@@ -6,26 +6,25 @@
   <title>TubeThink AI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <div class="app-container">
-    <header class="app-header">
-      <h1 class="logo">TubeThink<span> AI</span></h1>
-      <p class="tagline">Your intelligent YouTube idea assistant 🎥</p>
-    </header>
+  <header>
+    <h1 class="logo">TubeThink <span>AI</span></h1>
+  </header>
 
-    <main class="chat-container" id="chat-container">
-      <div class="message ai">
-        <div class="avatar">🤖</div>
-        <div class="text">Hi! I’m <b>TubeThink AI</b> — ready to help you craft your next viral YouTube idea!</div>
-      </div>
-    </main>
+  <main>
+    <div id="chat-container">
+      <div id="chat-box"></div>
+    </div>
 
-    <form id="chat-form" class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Type your message..." required />
-      <button type="submit">Send</button>
-    </form>
-  </div>
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Ask TubeThink AI anything..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 TubeThink AI. All rights reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
