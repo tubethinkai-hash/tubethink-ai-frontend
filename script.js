@@ -2,8 +2,8 @@ const form = document.getElementById("chat-form");
 const chatContainer = document.getElementById("chat-container");
 const input = document.getElementById("user-input");
 
-// 🌐 Your backend server URL
-const SERVER_URL = "https://tubethink-ai-server.onrender.com";
+// Replace this with your Render backend URL:
+const API_URL = "https://tubethink-ai-server.onrender.com/chat";
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -15,18 +15,17 @@ form.addEventListener("submit", async (e) => {
 
   const thinking = addMessage("ai", "Thinking...");
   try {
-    const res = await fetch(SERVER_URL, {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
 
-    if (!res.ok) throw new Error("Server error");
-
     const data = await res.json();
-    thinking.querySelector(".text").textContent = data.reply;
+    thinking.querySelector(".text").textContent = data.reply || "No response from AI.";
   } catch (err) {
-    thinking.querySelector(".text").textContent = "⚠️ Connection issue. Please try again.";
+    console.error(err);
+    thinking.querySelector(".text").textContent = "Error: unable to connect to AI server.";
   }
 });
 
