@@ -2,28 +2,34 @@ const form = document.getElementById("chat-form");
 const chatContainer = document.getElementById("chat-container");
 const input = document.getElementById("user-input");
 
-// When user submits the message
+// 🌐 Your backend server URL
+const SERVER_URL = "https://tubethink-ai-server.onrender.com";
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const message = input.value.trim();
   if (!message) return;
 
-  // Add user's message
   addMessage("user", message);
   input.value = "";
 
-  // Show temporary "thinking..." message
   const thinking = addMessage("ai", "Thinking...");
-  await new Promise((r) => setTimeout(r, 800));
+  try {
+    const res = await fetch(SERVER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
 
-  // Get real response from backend
-  const aiReply = await generateAIResponse(message);
+    if (!res.ok) throw new Error("Server error");
 
-  // Replace "Thinking..." with AI's real reply
-  thinking.querySelector(".text").textContent = aiReply;
+    const data = await res.json();
+    thinking.querySelector(".text").textContent = data.reply;
+  } catch (err) {
+    thinking.querySelector(".text").textContent = "⚠️ Connection issue. Please try again.";
+  }
 });
 
-// Function to display messages
 function addMessage(role, text) {
   const msg = document.createElement("div");
   msg.classList.add("message", role);
@@ -42,25 +48,4 @@ function addMessage(role, text) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
   return msg;
-}
-
-// Function to talk to backend API
-async function generateAIResponse(inputText) {
-  try {
-    const response = await fetch("https://tubethink-ai-server.onrender.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message: inputText }),
-    });
-
-    if (!response.ok) throw new Error("Server error");
-
-    const data = await response.json();
-    return data.reply || "🤖 Sorry, I didn’t get that. Try again!";
-  } catch (error) {
-    console.error("Error:", error);
-    return "⚠️ Connection issue — please try again later.";
-  }
 }
